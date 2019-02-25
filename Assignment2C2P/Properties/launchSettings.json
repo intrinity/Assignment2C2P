@@ -20,7 +20,7 @@
     "Assignment2C2P": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/customers/check",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

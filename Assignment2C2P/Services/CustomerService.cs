@@ -3,7 +3,7 @@ using Assignment2C2P.Models;
 
 namespace Assignment2C2P.Services
 {
-    public class CustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly Assignment2C2PContext _db;
 

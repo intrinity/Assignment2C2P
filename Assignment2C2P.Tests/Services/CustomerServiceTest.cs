@@ -47,7 +47,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var idNotInDatabase = 0;
@@ -64,7 +64,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validId = 2;
@@ -82,7 +82,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validId = 3;
@@ -102,7 +102,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var emailNotInDatabase = "customer_not_found@mail.com";
@@ -119,7 +119,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validEmail = "customer3@mail.com";
@@ -137,7 +137,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validEmail = "customer3@mail.com";
@@ -157,7 +157,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var idNotInDatabase = 5;
@@ -175,7 +175,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validId = 2;
@@ -193,7 +193,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validId = 1;
@@ -212,7 +212,7 @@ namespace Assignment2C2P.Tests.Services
             var dbContextMock = new Mock<Assignment2C2PContext>();
             dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
 
-            CustomerService service = new CustomerService(dbContextMock.Object);
+            ICustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
             var validId = 3;

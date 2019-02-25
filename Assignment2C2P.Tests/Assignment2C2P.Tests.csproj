@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Assignment2C2P\Assignment2C2P.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

@@ -1,10 +1,12 @@
 ﻿using Assignment2C2P.Models;
+using Assignment2C2P.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NJsonSchema;
 
 namespace Assignment2C2P
 {
@@ -22,8 +24,18 @@ namespace Assignment2C2P
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //Register Swagger (NSwag)
+            services.AddSwaggerDocument(options =>
+            {
+                options.Title = "Customer Inquiry API";
+                options.SchemaType = SchemaType.OpenApi3;
+            });
+
             //Register DbContext
             services.AddDbContext<Assignment2C2PContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Assignment2C2PDB")));
+
+            //Register service
+            services.AddTransient<ICustomerService, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +45,9 @@ namespace Assignment2C2P
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUi3();
 
             app.UseMvc();
         }
