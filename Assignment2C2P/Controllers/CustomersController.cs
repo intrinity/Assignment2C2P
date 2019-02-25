@@ -25,7 +25,15 @@ namespace Assignment2C2P.Controllers
                 return BadRequest(new ErrorResponseMessage {Message = "No inquiry criteria"});
             }
 
-            return Ok();
+            if (criteria.CustomerID.HasValue && !string.IsNullOrEmpty(criteria.Email))
+            {
+                var customer = _customerService.GetCustomerByIdAndEmail(criteria.CustomerID.Value, criteria.Email);
+                if (customer == null) return NotFound();
+
+                return Ok(customer);
+            }
+
+            return BadRequest();
         }
     }
 }
