@@ -33,7 +33,8 @@ namespace Assignment2C2P.Tests.Services
             CustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
-            var actual = service.GetCustomerById(0);
+            var idNotInDatabase = 0;
+            var actual = service.GetCustomerById(idNotInDatabase);
 
             //Assert
             Assert.Null(actual);
@@ -49,7 +50,8 @@ namespace Assignment2C2P.Tests.Services
             CustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
-            var actual = service.GetCustomerById(2);
+            var validId = 2;
+            var actual = service.GetCustomerById(validId);
             var expected = _customers[1];
 
             //Assert
@@ -66,7 +68,8 @@ namespace Assignment2C2P.Tests.Services
             CustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
-            var actual = service.GetCustomerByEmail("customer_not_found@mail.com");
+            var emailNotInDatabase = "customer_not_found@mail.com";
+            var actual = service.GetCustomerByEmail(emailNotInDatabase);
 
             //Assert
             Assert.Null(actual);
@@ -82,8 +85,64 @@ namespace Assignment2C2P.Tests.Services
             CustomerService service = new CustomerService(dbContextMock.Object);
 
             //Act
-            var actual = service.GetCustomerByEmail("customer3@mail.com");
+            var validEmail = "customer3@mail.com";
+            var actual = service.GetCustomerByEmail(validEmail);
             var expected = _customers[2];
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GetCustomerByIdAndEmail_IdNotFound_And_ValidEmail_MustReturnNull()
+        {
+            //Arrange
+            var dbContextMock = new Mock<Assignment2C2PContext>();
+            dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
+
+            CustomerService service = new CustomerService(dbContextMock.Object);
+
+            //Act
+            var idNotInDatabase = 5;
+            var validEmail = "customer1@mail.com";
+            var actual = service.GetCustomerByIdAndEmail(idNotInDatabase, validEmail);
+
+            //Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetCustomerByIdAndEmail_ValidId_And_EmailNotFound_MustReturnNull()
+        {
+            //Arrange
+            var dbContextMock = new Mock<Assignment2C2PContext>();
+            dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
+
+            CustomerService service = new CustomerService(dbContextMock.Object);
+
+            //Act
+            var validId = 2;
+            var emailNotInDatabase = "customer_not_found@mail.com";
+            var actual = service.GetCustomerByIdAndEmail(validId, emailNotInDatabase);
+
+            //Assert
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void GetCustomerByIdAndEmail_ValidIdAndEmail_MustReturnCustomer()
+        {
+            //Arrange
+            var dbContextMock = new Mock<Assignment2C2PContext>();
+            dbContextMock.Setup(x => x.Customer).ReturnsDbSet(_customers);
+
+            CustomerService service = new CustomerService(dbContextMock.Object);
+
+            //Act
+            var validId = 1;
+            var validEmail = "customer1@mail.com";
+            var actual = service.GetCustomerByIdAndEmail(validId, validEmail);
+            var expected = _customers[0];
 
             //Assert
             Assert.Equal(expected, actual);
