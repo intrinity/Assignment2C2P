@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment2C2P", "Assignmen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment2C2P.Tests", "Assignment2C2P.Tests\Assignment2C2P.Tests.csproj", "{2224538B-5B3C-4AA1-995B-16DCF6BA2B8D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{AB117480-4162-4394-AB38-8F58399E69F6}"
+	ProjectSection(SolutionItems) = preProject
+		DB\create_db.sql = DB\create_db.sql
+		DB\insert_sampledata.sql = DB\insert_sampledata.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
