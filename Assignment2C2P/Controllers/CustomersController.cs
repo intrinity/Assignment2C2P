@@ -1,4 +1,5 @@
-﻿using Assignment2C2P.Messages;
+﻿using System;
+using Assignment2C2P.Messages;
 using Assignment2C2P.Models;
 using Assignment2C2P.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +21,14 @@ namespace Assignment2C2P.Controllers
         [Route("inquiry")]
         public ActionResult<Customer> Inquiry(CustomerInquiryRequestMessage criteria)
         {
-            if (criteria == null || !criteria.CustomerID.HasValue && string.IsNullOrEmpty(criteria.Email))
+            if (criteria == null || string.IsNullOrEmpty(criteria.CustomerID) && string.IsNullOrEmpty(criteria.Email))
             {
                 return BadRequest(new ErrorResponseMessage {Message = "No inquiry criteria"});
             }
 
-            if (criteria.CustomerID.HasValue && !string.IsNullOrEmpty(criteria.Email))
+            if (!string.IsNullOrEmpty(criteria.CustomerID) && !string.IsNullOrEmpty(criteria.Email))
             {
-                var customer = _customerService.GetCustomerByIdAndEmail(criteria.CustomerID.Value, criteria.Email);
+                var customer = _customerService.GetCustomerByIdAndEmail(Convert.ToInt32(criteria.CustomerID), criteria.Email);
                 if (customer == null) return NotFound();
 
                 return Ok(customer);

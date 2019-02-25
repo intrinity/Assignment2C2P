@@ -4,6 +4,7 @@ using Assignment2C2P.Models;
 using Assignment2C2P.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Assignment2C2P.Tests.Controllers
@@ -75,7 +76,7 @@ namespace Assignment2C2P.Tests.Controllers
 
             CustomersController controller = new CustomersController(mockCustomerService.Object);
 
-            var criteria = new CustomerInquiryRequestMessage{CustomerID = validId, Email = validEmail};
+            var criteria = new CustomerInquiryRequestMessage{CustomerID = validId.ToString(), Email = validEmail};
 
             //Act
             var action = controller.Inquiry(criteria);
@@ -98,7 +99,7 @@ namespace Assignment2C2P.Tests.Controllers
 
             CustomersController controller = new CustomersController(mockCustomerService.Object);
 
-            var criteria = new CustomerInquiryRequestMessage { CustomerID = validId, Email = validEmail };
+            var criteria = new CustomerInquiryRequestMessage { CustomerID = validId.ToString(), Email = validEmail };
 
             //Act
             var action = controller.Inquiry(criteria);
@@ -125,7 +126,7 @@ namespace Assignment2C2P.Tests.Controllers
             CustomersController controller = new CustomersController(mockCustomerService.Object);
 
             var invalidId = 0;
-            var criteria = new CustomerInquiryRequestMessage { CustomerID = invalidId, Email = validEmail };
+            var criteria = new CustomerInquiryRequestMessage { CustomerID = invalidId.ToString(), Email = validEmail };
 
             //Act
             var actual = controller.Inquiry(criteria);
@@ -148,7 +149,7 @@ namespace Assignment2C2P.Tests.Controllers
             CustomersController controller = new CustomersController(mockCustomerService.Object);
 
             var invalidEmail = "invalid@mail.com";
-            var criteria = new CustomerInquiryRequestMessage {CustomerID = validId, Email = invalidEmail};
+            var criteria = new CustomerInquiryRequestMessage {CustomerID = validId.ToString(), Email = invalidEmail};
 
             //Act
             var actual = controller.Inquiry(criteria);
@@ -156,5 +157,23 @@ namespace Assignment2C2P.Tests.Controllers
             //Assert
             Assert.IsType<NotFoundResult>(actual.Result);
         }
+
+        //[Fact]
+        //public void Inquiry_WhenCalled_WithJsonInvalidIdOnly_MustReturnsBadRequest()
+        //{
+        //    //Arrange
+        //    var mockCustomerService = new Mock<ICustomerService>();
+        //    CustomersController controller = new CustomersController(mockCustomerService.Object);
+
+        //    var json = "{ \"customerID\":\"InvalidID\" }";
+        //    var message = JsonConvert.DeserializeObject<CustomerInquiryRequestMessage>(json);
+
+        //    //Act
+        //    var actual = controller.Inquiry(message);
+
+        //    //Assert
+        //    Assert.IsType<BadRequestObjectResult>(actual.Result);
+        //}
+
     }
 }
