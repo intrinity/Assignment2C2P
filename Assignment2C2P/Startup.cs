@@ -22,7 +22,7 @@ namespace Assignment2C2P
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(setup => setup.AllowEmptyInputInBodyModelBinding = true).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register Swagger (NSwag)
             services.AddSwaggerDocument(options =>
@@ -35,7 +35,7 @@ namespace Assignment2C2P
             services.AddDbContext<Assignment2C2PContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Assignment2C2PDB")));
 
             //Register service
-            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerService, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
