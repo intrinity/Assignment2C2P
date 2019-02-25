@@ -16,5 +16,10 @@ namespace Assignment2C2P.Services
         {
             return _db.Customer.FirstOrDefault(c => c.CustomerId == id);
         }
+
+        public Customer GetCustomerByEmail(string email)
+        {
+            return _db.Customer.FirstOrDefault(c => c.Email == email);
+        }
     }
 }
