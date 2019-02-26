@@ -2,6 +2,7 @@
 using Assignment2C2P.Messages;
 using Assignment2C2P.Models;
 using Assignment2C2P.Services;
+using Assignment2C2P.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Assignment2C2P.Controllers
@@ -33,6 +34,9 @@ namespace Assignment2C2P.Controllers
 
             if (!string.IsNullOrEmpty(criteria.CustomerID) && !string.IsNullOrEmpty(criteria.Email))
             {
+                if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage {Message = "Invalid Customer ID"});
+                if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
+
                 var customer = _customerService.GetCustomerByIdAndEmail(Convert.ToInt32(criteria.CustomerID), criteria.Email);
                 if (customer == null) return NotFound(null);
 
@@ -41,6 +45,8 @@ namespace Assignment2C2P.Controllers
 
             if (!string.IsNullOrEmpty(criteria.CustomerID))
             {
+                if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Customer ID" });
+
                 var customer = _customerService.GetCustomerById(Convert.ToInt32(criteria.CustomerID));
                 if (customer == null) return NotFound(null);
 
@@ -49,6 +55,8 @@ namespace Assignment2C2P.Controllers
 
             if (!string.IsNullOrEmpty(criteria.Email))
             {
+                if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
+
                 var customer = _customerService.GetCustomerByEmail(criteria.Email);
                 if (customer == null) return NotFound(null);
 
