@@ -1,4 +1,5 @@
-﻿using Assignment2C2P.Controllers;
+﻿using System;
+using Assignment2C2P.Controllers;
 using Assignment2C2P.Messages;
 using Assignment2C2P.Models;
 using Assignment2C2P.Services;
@@ -491,6 +492,26 @@ namespace Assignment2C2P.Tests.Controllers
 
             //Assert
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled_AndErrorOccurred_MustReturnsStatusCode500()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            string email = "valid@email.com";
+            mockCustomerService.Setup(s => s.GetCustomerByEmail(email)).Throws(new Exception("Any exception"));
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+            var criteria = new CustomerInquiryRequestMessage { Email = email };
+
+            //Act
+            var result = controller.Inquiry(criteria);
+            var actual = result.Result as ObjectResult;
+            var expected = 500;
+
+            //Assert
+            Assert.Equal(expected, actual?.StatusCode);
         }
     }
 }

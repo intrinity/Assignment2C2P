@@ -29,45 +29,53 @@ namespace Assignment2C2P.Controllers
         [SwaggerResponse("200", typeof(OkObjectResult), Description = "Success")]
         [SwaggerResponse("404", typeof(NotFoundObjectResult), Description = "Inquiry criteria does not match any record on the database")]
         [SwaggerResponse("400", typeof(BadRequestObjectResult), Description = "Invalid request")]
+        [SwaggerResponse("500", typeof(ObjectResult), Description = "An error occurred")]
         public ActionResult<Customer> Inquiry(CustomerInquiryRequestMessage criteria)
         {
-            if (criteria == null || string.IsNullOrEmpty(criteria.CustomerID) && string.IsNullOrEmpty(criteria.Email))
+            try
             {
-                return BadRequest(new ErrorResponseMessage {Message = "No inquiry criteria"});
-            }
+                if (criteria == null || string.IsNullOrEmpty(criteria.CustomerID) && string.IsNullOrEmpty(criteria.Email))
+                {
+                    return BadRequest(new ErrorResponseMessage { Message = "No inquiry criteria" });
+                }
 
-            if (!string.IsNullOrEmpty(criteria.CustomerID) && !string.IsNullOrEmpty(criteria.Email))
+                if (!string.IsNullOrEmpty(criteria.CustomerID) && !string.IsNullOrEmpty(criteria.Email))
+                {
+                    if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Customer ID" });
+                    if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
+
+                    var customer = _customerService.GetCustomerByIdAndEmail(Convert.ToInt32(criteria.CustomerID), criteria.Email);
+                    if (customer == null) return NotFound(null);
+
+                    return Ok(customer);
+                }
+
+                if (!string.IsNullOrEmpty(criteria.CustomerID))
+                {
+                    if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Customer ID" });
+
+                    var customer = _customerService.GetCustomerById(Convert.ToInt32(criteria.CustomerID));
+                    if (customer == null) return NotFound(null);
+
+                    return Ok(customer);
+                }
+
+                if (!string.IsNullOrEmpty(criteria.Email))
+                {
+                    if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
+
+                    var customer = _customerService.GetCustomerByEmail(criteria.Email);
+                    if (customer == null) return NotFound(null);
+
+                    return Ok(customer);
+                }
+
+                return BadRequest(null);
+            }
+            catch (Exception ex)
             {
-                if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage {Message = "Invalid Customer ID"});
-                if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
-
-                var customer = _customerService.GetCustomerByIdAndEmail(Convert.ToInt32(criteria.CustomerID), criteria.Email);
-                if (customer == null) return NotFound(null);
-
-                return Ok(customer);
+                return StatusCode(500, new ErrorResponseMessage {Message = "An error occured"});
             }
-
-            if (!string.IsNullOrEmpty(criteria.CustomerID))
-            {
-                if (!InquiryCriteriaValidation.ValidateCustomerID(criteria.CustomerID)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Customer ID" });
-
-                var customer = _customerService.GetCustomerById(Convert.ToInt32(criteria.CustomerID));
-                if (customer == null) return NotFound(null);
-
-                return Ok(customer);
-            }
-
-            if (!string.IsNullOrEmpty(criteria.Email))
-            {
-                if (!InquiryCriteriaValidation.ValidateEmail(criteria.Email)) return BadRequest(new ErrorResponseMessage { Message = "Invalid Email" });
-
-                var customer = _customerService.GetCustomerByEmail(criteria.Email);
-                if (customer == null) return NotFound(null);
-
-                return Ok(customer);
-            }
-
-            return BadRequest(null);
         }
     }
 }
