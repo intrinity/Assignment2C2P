@@ -132,7 +132,7 @@ namespace Assignment2C2P.Tests.Controllers
             var actual = controller.Inquiry(criteria);
 
             //Assert
-            Assert.IsType<NotFoundResult>(actual.Result);
+            Assert.IsType<NotFoundObjectResult>(actual.Result);
         }
 
         [Fact]
@@ -155,7 +155,74 @@ namespace Assignment2C2P.Tests.Controllers
             var actual = controller.Inquiry(criteria);
 
             //Assert
-            Assert.IsType<NotFoundResult>(actual.Result);
+            Assert.IsType<NotFoundObjectResult>(actual.Result);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithInvalidIdOnly_MustReturnsNotFound()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var invalidId = 0;
+            mockCustomerService.Setup(s => s.GetCustomerById(invalidId)).Returns(() => null);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+            var criteria = new CustomerInquiryRequestMessage { CustomerID = invalidId.ToString() };
+
+            //Act
+            var actual = controller.Inquiry(criteria);
+
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(actual.Result);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithValidIdOnly_MustReturnsOkObjectResult()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var validId = 1;
+            var validEmail = "customer1@mail.com";
+            var customer = new Customer { CustomerId = validId, Name = "Customer 1", Email = validEmail, MobileNo = "0891234567" };
+
+            mockCustomerService.Setup(s => s.GetCustomerById(validId)).Returns(customer);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+            var criteria = new CustomerInquiryRequestMessage { CustomerID = validId.ToString() };
+
+            //Act
+            var actual = controller.Inquiry(criteria);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(actual.Result);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithValidIdOnly_MustReturnsCustomer()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var validId = 1;
+            var validEmail = "customer1@mail.com";
+            var customer = new Customer { CustomerId = validId, Name = "Customer 1", Email = validEmail, MobileNo = "0891234567" };    
+            mockCustomerService.Setup(s => s.GetCustomerById(validId)).Returns(customer);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+
+            var criteria = new CustomerInquiryRequestMessage { CustomerID = validId.ToString() };
+
+            //Act
+            var action = controller.Inquiry(criteria);
+            var result = action.Result as OkObjectResult;
+
+            var actual = result?.Value as Customer;
+            var expected = customer;
+
+            //Assert
+            Assert.Equal(expected, actual);
         }
     }
 }

@@ -34,12 +34,20 @@ namespace Assignment2C2P.Controllers
             if (!string.IsNullOrEmpty(criteria.CustomerID) && !string.IsNullOrEmpty(criteria.Email))
             {
                 var customer = _customerService.GetCustomerByIdAndEmail(Convert.ToInt32(criteria.CustomerID), criteria.Email);
-                if (customer == null) return NotFound();
+                if (customer == null) return NotFound(null);
 
                 return Ok(customer);
             }
 
-            return BadRequest();
+            if (!string.IsNullOrEmpty(criteria.CustomerID))
+            {
+                var customer = _customerService.GetCustomerById(Convert.ToInt32(criteria.CustomerID));
+                if (customer == null) return NotFound(null);
+
+                return Ok(customer);
+            }
+
+            return BadRequest(null);
         }
     }
 }
