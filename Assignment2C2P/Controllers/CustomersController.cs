@@ -4,6 +4,7 @@ using Assignment2C2P.Models;
 using Assignment2C2P.Services;
 using Assignment2C2P.Validation;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace Assignment2C2P.Controllers
 {
@@ -25,6 +26,9 @@ namespace Assignment2C2P.Controllers
         /// <returns>Customer detail and recent transactions</returns>
         [HttpPost]
         [Route("inquiry")]
+        [SwaggerResponse("200", typeof(OkObjectResult), Description = "Success")]
+        [SwaggerResponse("404", typeof(NotFoundObjectResult), Description = "Inquiry criteria does not match any record on the database")]
+        [SwaggerResponse("400", typeof(BadRequestObjectResult), Description = "Invalid request")]
         public ActionResult<Customer> Inquiry(CustomerInquiryRequestMessage criteria)
         {
             if (criteria == null || string.IsNullOrEmpty(criteria.CustomerID) && string.IsNullOrEmpty(criteria.Email))
