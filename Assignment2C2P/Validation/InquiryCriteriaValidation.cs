@@ -21,6 +21,11 @@ namespace Assignment2C2P.Validation
 
         public static bool ValidateEmail(string email)
         {
+            if (string.IsNullOrEmpty(email)) return false;
+
+            //Max length 25 digits
+            if (email.Length > 25) return false;
+
             EmailFormatValidator validator = new EmailFormatValidator();
             return validator.IsValid(email, JTokenType.None);
         }
