@@ -47,6 +47,14 @@ namespace Assignment2C2P.Controllers
                 return Ok(customer);
             }
 
+            if (!string.IsNullOrEmpty(criteria.Email))
+            {
+                var customer = _customerService.GetCustomerByEmail(criteria.Email);
+                if (customer == null) return NotFound(null);
+
+                return Ok(customer);
+            }
+
             return BadRequest(null);
         }
     }

@@ -224,5 +224,72 @@ namespace Assignment2C2P.Tests.Controllers
             //Assert
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithInvalidEmailOnly_MustReturnsNotFound()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var invalidEmail = "invalid@mail.com";
+            mockCustomerService.Setup(s => s.GetCustomerByEmail(invalidEmail)).Returns(() => null);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+            var criteria = new CustomerInquiryRequestMessage { Email = invalidEmail };
+
+            //Act
+            var actual = controller.Inquiry(criteria);
+
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(actual.Result);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithValidEmailOnly_MustReturnsOkObjectResult()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var validId = 1;
+            var validEmail = "customer1@mail.com";
+            var customer = new Customer { CustomerId = validId, Name = "Customer 1", Email = validEmail, MobileNo = "0891234567" };
+
+            mockCustomerService.Setup(s => s.GetCustomerByEmail(validEmail)).Returns(customer);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+            var criteria = new CustomerInquiryRequestMessage { Email = validEmail };
+
+            //Act
+            var actual = controller.Inquiry(criteria);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(actual.Result);
+        }
+
+        [Fact]
+        public void Inquiry_WhenCalled__WithValidEmailOnly_MustReturnsCustomer()
+        {
+            //Arrange
+            var mockCustomerService = new Mock<ICustomerService>();
+
+            var validId = 1;
+            var validEmail = "customer1@mail.com";
+            var customer = new Customer { CustomerId = validId, Name = "Customer 1", Email = validEmail, MobileNo = "0891234567" };
+            mockCustomerService.Setup(s => s.GetCustomerByEmail(validEmail)).Returns(customer);
+
+            CustomersController controller = new CustomersController(mockCustomerService.Object);
+
+            var criteria = new CustomerInquiryRequestMessage { Email = validEmail };
+
+            //Act
+            var action = controller.Inquiry(criteria);
+            var result = action.Result as OkObjectResult;
+
+            var actual = result?.Value as Customer;
+            var expected = customer;
+
+            //Assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
