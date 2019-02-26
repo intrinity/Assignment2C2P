@@ -157,23 +157,5 @@ namespace Assignment2C2P.Tests.Controllers
             //Assert
             Assert.IsType<NotFoundResult>(actual.Result);
         }
-
-        //[Fact]
-        //public void Inquiry_WhenCalled_WithJsonInvalidIdOnly_MustReturnsBadRequest()
-        //{
-        //    //Arrange
-        //    var mockCustomerService = new Mock<ICustomerService>();
-        //    CustomersController controller = new CustomersController(mockCustomerService.Object);
-
-        //    var json = "{ \"customerID\":\"InvalidID\" }";
-        //    var message = JsonConvert.DeserializeObject<CustomerInquiryRequestMessage>(json);
-
-        //    //Act
-        //    var actual = controller.Inquiry(message);
-
-        //    //Assert
-        //    Assert.IsType<BadRequestObjectResult>(actual.Result);
-        //}
-
     }
 }

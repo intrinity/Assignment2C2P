@@ -17,6 +17,11 @@ namespace Assignment2C2P.Controllers
             _customerService = customerService;
         }
 
+        /// <summary>
+        /// Inquiry customer detail and recent transactions
+        /// </summary>
+        /// <param name="criteria">Customer ID and email address</param>
+        /// <returns>Customer detail and recent transactions</returns>
         [HttpPost]
         [Route("inquiry")]
         public ActionResult<Customer> Inquiry(CustomerInquiryRequestMessage criteria)

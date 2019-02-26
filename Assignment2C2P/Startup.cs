@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using NJsonSchema;
 
 namespace Assignment2C2P
@@ -22,7 +23,9 @@ namespace Assignment2C2P
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(setup => setup.AllowEmptyInputInBodyModelBinding = true).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(setup => setup.AllowEmptyInputInBodyModelBinding = true)
+                .AddJsonOptions(options=>options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register Swagger (NSwag)
             services.AddSwaggerDocument(options =>
