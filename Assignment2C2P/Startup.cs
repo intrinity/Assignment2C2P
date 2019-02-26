@@ -31,6 +31,9 @@ namespace Assignment2C2P
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //Suppress model state error message
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+
             //Register Swagger (NSwag)
             services.AddSwaggerDocument(options =>
             {

@@ -8,12 +8,19 @@ using NSwag.Annotations;
 
 namespace Assignment2C2P.Controllers
 {
+    /// <summary>
+    /// Customer controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
 
+        /// <summary>
+        /// Customer controller constructor
+        /// </summary>
+        /// <param name="customerService">Service to provide customer details</param>
         public CustomersController(ICustomerService customerService)
         {
             _customerService = customerService;
@@ -29,6 +36,7 @@ namespace Assignment2C2P.Controllers
         [SwaggerResponse("200", typeof(OkObjectResult), Description = "Success")]
         [SwaggerResponse("404", typeof(NotFoundObjectResult), Description = "Inquiry criteria does not match any record on the database")]
         [SwaggerResponse("400", typeof(BadRequestObjectResult), Description = "Invalid request")]
+        [SwaggerResponse("400", typeof(ErrorResponseMessage), Description = "Invalid request with error message")]
         [SwaggerResponse("500", typeof(ObjectResult), Description = "An error occurred")]
         public ActionResult<Customer> Inquiry(CustomerInquiryRequestMessage criteria)
         {
