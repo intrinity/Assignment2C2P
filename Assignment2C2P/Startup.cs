@@ -24,7 +24,11 @@ namespace Assignment2C2P
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(setup => setup.AllowEmptyInputInBodyModelBinding = true)
-                .AddJsonOptions(options=>options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .AddJsonOptions(options=>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.DateFormatString = "dd/MM/yyyy HH:mm";
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register Swagger (NSwag)
